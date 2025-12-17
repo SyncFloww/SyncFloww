@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>SyncFloww - AI-Powered Marketing Suite</title>
+    <meta name="description" content="Transform your marketing with AI-powered workflows, social media management, and brand automation">
+    <meta name="author" content="SyncFloww" />
+    <meta name="keywords" content="marketing automation, social media, AI marketing, brand management, workflows">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6366f1" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="SyncFloww" />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    
+    
+    <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/5fYAWMwZPHQMONj0vD775X4I1Gl1/social-images/social-1764944754542-Icon.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@syncfloww" />
+    
+    
+    <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/5fYAWMwZPHQMONj0vD775X4I1Gl1/social-images/social-1764944754542-Icon.png">
+
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/x-icon" href="https://storage.googleapis.com/gpt-engineer-file-uploads/5fYAWMwZPHQMONj0vD775X4I1Gl1/uploads/1765314958883-SynFloww Logo-blue.png">
+    <link rel="apple-touch-icon" href="/Icon.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta property="og:title" content="SyncFloww - AI-Powered Marketing Suite">
+  <meta name="twitter:title" content="SyncFloww - AI-Powered Marketing Suite">
+  <meta property="og:description" content="Transform your marketing with AI-powered workflows, social media management, and brand automation">
+  <meta name="twitter:description" content="Transform your marketing with AI-powered workflows, social media management, and brand automation">
+</head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Register Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered:', registration.scope);
+            })
+            .catch((error) => {
+              console.log('SW registration failed:', error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
