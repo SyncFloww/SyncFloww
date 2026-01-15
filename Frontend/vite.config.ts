@@ -9,7 +9,12 @@ export default defineConfig(({ mode }) => ({
   server: {
     port: 8080,
     host: true,
-    allowedHosts: ["syncfloww-gfxi.onrender.com"]
+    allowedHosts: [
+      "syncfloww-gfxi.onrender.com",
+      "syncfloww.onrender.com",
+      "https://syncfloww.onrender.com",
+      "https://syncfloww-gfxi.onrender.com"
+    ]
   },
   plugins: [react(), tsconfigPaths(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

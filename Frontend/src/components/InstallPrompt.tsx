@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Smartphone, Download, X } from 'lucide-react';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Share, SquarePlus } from 'lucide-react';
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -71,6 +73,10 @@ export function InstallPrompt() {
       }
       setDeferredPrompt(null);
     }
+    // For iOS, there is no programmatic install, so the button just closes the dialog
+    if (isIOS) {
+        setShowPrompt(false);
+    }
   };
 
   const handleDismiss = () => {
@@ -81,77 +87,36 @@ export function InstallPrompt() {
   if (isStandalone) return null;
 
   return (
-    <Dialog open={showPrompt} onOpenChange={setShowPrompt}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <div className="flex justify-center mb-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-lg">
-              <img src="/Icon.png" alt="SyncFloww" className="w-12 h-12" />
-            </div>
-          </div>
-          <DialogTitle className="text-center text-xl">Install SyncFloww</DialogTitle>
-          <DialogDescription className="text-center">
-            Get the full app experience! Install SyncFloww on your device for faster access and offline features.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-4 py-4">
-          {isIOS ? (
-            <div className="bg-muted p-4 rounded-lg">
-              <p className="text-sm text-muted-foreground mb-3">To install on iOS:</p>
-              <ol className="text-sm space-y-2 text-foreground">
-                <li className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs">1</span>
-                  Tap the Share button in Safari
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs">2</span>
-                  Scroll down and tap "Add to Home Screen"
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs">3</span>
-                  Tap "Add" to confirm
-                </li>
-              </ol>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
-                <Smartphone className="w-8 h-8 text-primary" />
-                <div>
-                  <p className="font-medium text-foreground">Quick Access</p>
-                  <p className="text-sm text-muted-foreground">Launch directly from your home screen</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
-                <Download className="w-8 h-8 text-primary" />
-                <div>
-                  <p className="font-medium text-foreground">Works Offline</p>
-                  <p className="text-sm text-muted-foreground">Access your projects anywhere</p>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="flex gap-3">
-          <Button variant="outline" className="flex-1" onClick={handleDismiss}>
-            <X className="w-4 h-4 mr-2" />
-            Not Now
-          </Button>
-          {!isIOS && deferredPrompt && (
-            <Button className="flex-1" onClick={handleInstall}>
-              <Download className="w-4 h-4 mr-2" />
-              Install App
-            </Button>
+    <AlertDialog open={showPrompt} onOpenChange={setShowPrompt}>
+      <AlertDialogContent className="max-w-[360px]">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Install SyncFloww</AlertDialogTitle>
+          <AlertDialogDescription className="text-left">
+            {isIOS ? (
+              <span className="space-y-2 block">
+                <span>To install on iOS:</span>
+                <span className="flex items-center gap-2 mt-2">
+                  1. Tap the Share button <Share className="w-4 h-4 inline" />
+                </span>
+                <span className="flex items-center gap-2">
+                  2. Scroll down and tap "Add to Home Screen" <SquarePlus className='w-4 h-4 inline' />
+                </span>
+              </span>
+            ) : (
+              "Install SyncFloww on your device for quick access and offline features."
+            )}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={handleDismiss}>Not Now</AlertDialogCancel>
+          {!isIOS && (
+            <AlertDialogAction onClick={handleInstall}>Install</AlertDialogAction>
           )}
           {isIOS && (
-            <Button className="flex-1" onClick={handleDismiss}>
-              Got it!
-            </Button>
+             <AlertDialogAction onClick={handleDismiss}>Got it</AlertDialogAction>
           )}
-        </div>
-      </DialogContent>
-    </Dialog>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

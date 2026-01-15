@@ -8,17 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-interface Project {
-  id: string;
-  title: string;
-  description?: string;
-  thumbnail_url?: string;
-  project_type: string;
-  generations_count: number;
-  status: string;
-  created_at: string;
-  updated_at: string;
-}
+import { api, Project } from '@/lib/api';
 
 export default function MyProjects() {
   const { user } = useAuth();
@@ -28,58 +18,24 @@ export default function MyProjects() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Sample project data for demonstration
-  const sampleProjects: Project[] = [
-    {
-      id: '1',
-      title: 'Cartoon Adventure',
-      description: 'Animated story for kids',
-      project_type: 'Cartoon',
-      generations_count: 3,
-      status: 'completed',
-      created_at: '2 mins ago',
-      updated_at: '2 mins ago',
-      thumbnail_url: ''
-    },
-    {
-      id: '2', 
-      title: 'Cyberpunk City Animation',
-      description: 'Futuristic cityscape video',
-      project_type: 'Animation',
-      generations_count: 1,
-      status: 'in_progress',
-      created_at: '10 mins ago',
-      updated_at: '10 mins ago',
-      thumbnail_url: ''
-    },
-    {
-      id: '3',
-      title: 'Fantasy Landscape Loop',
-      description: 'Magical forest scene',
-      project_type: 'Loop',
-      generations_count: 2,
-      status: 'completed',
-      created_at: 'Mar 30, 2025',
-      updated_at: 'Mar 30, 2025',
-      thumbnail_url: ''
-    },
-    {
-      id: '4',
-      title: 'AI-Generated Sci-Fi Trailer',
-      description: 'Space exploration trailer',
-      project_type: 'Trailer',
-      generations_count: 4,
-      status: 'completed',
-      created_at: 'Mar 27, 2025',
-      updated_at: 'Mar 27, 2025',
-      thumbnail_url: ''
-    }
-  ];
-
   useEffect(() => {
-    // For now, using sample data. In a real app, this would fetch from Supabase
-    setProjects(sampleProjects);
-    setLoading(false);
+    const fetchProjects = async () => {
+      try {
+        const data = await api.getProjects();
+        setProjects(data);
+      } catch (error) {
+        console.error('Failed to fetch projects:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load projects. Please try again later.",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
   }, [user]);
 
   const getStatusColor = (status: string) => {
@@ -142,7 +98,7 @@ export default function MyProjects() {
             Filter
           </Button>
         </div>
-        
+
         <div className="flex items-center gap-2">
           <Button
             variant={viewMode === 'grid' ? 'default' : 'outline'}
@@ -166,7 +122,7 @@ export default function MyProjects() {
       {/* Recent Created Section */}
       <div className="space-y-4">
         <h2 className="text-lg font-semibold text-foreground">Recent Created</h2>
-        
+
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProjects.map((project) => (
@@ -184,14 +140,14 @@ export default function MyProjects() {
                       </Badge>
                     </div>
                   </div>
-                  
+
                   {/* Content */}
                   <div className="p-4 space-y-3">
                     <div>
                       <h3 className="font-semibold text-foreground line-clamp-1">{project.title}</h3>
                       <p className="text-sm text-muted-foreground line-clamp-1">{project.description}</p>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <Badge className={getStatusColor(project.status)} variant="outline">
                         {project.status.replace('_', ' ')}
@@ -201,7 +157,7 @@ export default function MyProjects() {
                         {project.created_at}
                       </span>
                     </div>
-                    
+
                     <div className="text-xs text-muted-foreground">
                       {project.generations_count} generation{project.generations_count !== 1 ? 's' : ''} | {project.created_at}
                     </div>
@@ -220,7 +176,7 @@ export default function MyProjects() {
                     <div className="w-20 h-12 bg-gradient-secondary rounded flex items-center justify-center flex-shrink-0">
                       <Play className="w-6 h-6 text-white/80" />
                     </div>
-                    
+
                     {/* Content */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
