@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { api } from '@/lib/api';
+import { api } from '@/lib/api.ts';
 
 interface Brand {
   id: string;
@@ -48,7 +48,7 @@ export default function DashboardPage() {
       try {
         const data = await api.getBrands();
         // Map backend data to frontend interface
-        const mappedBrands = data.map((b: any) => ({
+        const mappedBrands: Brand[] = data.map((b: any) => ({
           id: b.id.toString(),
           name: b.name,
           status: b.is_active ? 'active' : 'pending',
