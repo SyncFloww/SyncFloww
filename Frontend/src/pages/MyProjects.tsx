@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-import { api, Project } from '@/lib/api';
+import { api, Project } from '@/lib/api.ts';
 
 export default function MyProjects() {
   const { user } = useAuth();
