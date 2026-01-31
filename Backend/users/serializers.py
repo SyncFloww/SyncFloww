@@ -60,3 +60,8 @@ class SocialAuthSerializer(serializers.Serializer):
     """Serializer for social authentication"""
     access_token = serializers.CharField(required=True)
     provider = serializers.ChoiceField(choices=['google', 'facebook', 'apple'], required=True)
+
+
+class PasswordResetSerializer(serializers.Serializer):
+    """Serializer for password reset request"""
+    email = serializers.EmailField(required=True)

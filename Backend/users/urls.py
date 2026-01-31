@@ -11,6 +11,7 @@ from .views import (
     FacebookOAuthView,
     AppleOAuthView,
     ProfileViewSet,
+    PasswordResetView,
 )
 
 router = DefaultRouter()
@@ -23,6 +24,7 @@ urlpatterns = [
     path('auth/logout/', LogoutView.as_view(), name='logout'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('auth/me/', CurrentUserView.as_view(), name='current_user'),
+    path('auth/password-reset/', PasswordResetView.as_view(), name='password_reset'),
     
     # Social authentication endpoints
     path('auth/google/', GoogleOAuthView.as_view(), name='google_oauth'),

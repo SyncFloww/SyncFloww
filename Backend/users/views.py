@@ -285,3 +285,50 @@ class ProfileViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.
             
         serializer = self.get_serializer(profile)
         return Response(serializer.data)
+
+
+class PasswordResetView(APIView):
+    """Password reset request endpoint"""
+    permission_classes = [AllowAny]
+    
+    def post(self, request):
+        from .serializers import PasswordResetSerializer
+        from django.core.mail import send_mail
+        from django.conf import settings
+        
+        serializer = PasswordResetSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.validated_data['email']
+            
+            try:
+                user = User.objects.get(email=email)
+                
+                # Generate password reset token (you can use a more sophisticated method)
+                # For now, we'll just send a confirmation that the email was received
+                # In production, you should generate a secure token and send reset link
+                
+                send_mail(
+                    'Password Reset Request',
+                    f'Hello {user.full_name or user.email},\n\n'
+                    f'We received a request to reset your password. '
+                    f'Please use the link below to reset your password:\n\n'
+                    f'[Password reset link would go here]\n\n'
+                    f'If you did not request this, please ignore this email.',
+                    settings.DEFAULT_FROM_EMAIL,
+                    [email],
+                    fail_silently=False,
+                )
+                
+                return Response(
+                    {'message': 'Password reset email sent'}, 
+                    status=status.HTTP_200_OK
+                )
+                
+            except User.DoesNotExist:
+                # For security, don't reveal that the email doesn't exist
+                return Response(
+                    {'message': 'Password reset email sent'}, 
+                    status=status.HTTP_200_OK
+                )
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
