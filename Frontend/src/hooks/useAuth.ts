@@ -184,6 +184,22 @@ export const useAuth = () => {
     }
   };
 
+  const resetPassword = async (email: string) => {
+    try {
+      await apiClient.post('/auth/password-reset/', {
+        email,
+      });
+
+      return { error: null };
+    } catch (error: any) {
+      return {
+        error: {
+          message: error.response?.data?.error || 'Password reset failed'
+        }
+      };
+    }
+  };
+
   return {
     user,
     session: user ? { user } : null,
@@ -194,5 +210,6 @@ export const useAuth = () => {
     signInWithFacebook,
     signInWithApple,
     signOut,
+    resetPassword,
   };
 };
