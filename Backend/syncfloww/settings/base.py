@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'social',
     'automations',
     'analytics',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'automations',
     'ai_agents',
     'analytics',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
