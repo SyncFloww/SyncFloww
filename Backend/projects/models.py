@@ -36,3 +36,6 @@ class Project(models.Model):
     class Meta:
         db_table = 'projects'
         ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.title} - {self.user.email}"

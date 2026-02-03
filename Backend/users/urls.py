@@ -1,17 +1,36 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ProfileViewSet
+from rest_framework_simplejwt.views import TokenRefreshView
+
+from .views import (
+    RegisterView,
+    LoginView,
+    LogoutView,
+    CurrentUserView,
+    GoogleOAuthView,
+    FacebookOAuthView,
+    AppleOAuthView,
+    ProfileViewSet,
+    PasswordResetView,
+)
 
 router = DefaultRouter()
-# /users/me/ is handled by the action, but generic routing helps if we expand
-# router.register(r'', ProfileViewSet, basename='user') 
+router.register(r'profile', ProfileViewSet, basename='profile')
 
 urlpatterns = [
-    # Explicit 'me' endpoint path if we want strictly /api/users/me/
-    # But ViewsSet @action usually does /users/me/. 
-    # Let's use the router for standard ViewSet pattern if possible, 
-    # but ProfileViewSet is designed as singleton-like for 'me' mostly.
+    # Authentication endpoints
+    path('auth/register/', RegisterView.as_view(), name='register'),
+    path('auth/login/', LoginView.as_view(), name='login'),
+    path('auth/logout/', LogoutView.as_view(), name='logout'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/me/', CurrentUserView.as_view(), name='current_user'),
+    path('auth/password-reset/', PasswordResetView.as_view(), name='password_reset'),
     
-    path('me/', ProfileViewSet.as_view({'get': 'me', 'put': 'me'}), name='user-me'),
-    path('me/brands/', ProfileViewSet.as_view({'get': 'brands'}), name='user-brands'), # Placeholder if we add brands action later
+    # Social authentication endpoints
+    path('auth/google/', GoogleOAuthView.as_view(), name='google_oauth'),
+    path('auth/facebook/', FacebookOAuthView.as_view(), name='facebook_oauth'),
+    path('auth/apple/', AppleOAuthView.as_view(), name='apple_oauth'),
+    
+    # Profile endpoints
+    path('', include(router.urls)),
 ]
