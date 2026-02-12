@@ -19,10 +19,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-*6hj=#s!ju_k&t!=mr7t7#xmhs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,api.syncfloww.com,preview--syncfloww001.lovable.app,https://api.syncfloww.com,https://preview--syncfloww001.lovable.app').split(',')
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,https://syncfloww.com,https://preview--syncfloww001.lovable.app').split(',')
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,https://syncfloww.com,https://preview--syncfloww001.lovable.app,https://api.syncfloww.com,https://preview--syncfloww001.lovable.app').split(',')
 CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
@@ -86,19 +86,16 @@ WSGI_APPLICATION = 'syncflowwAPI.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB', 'syncfloww_db'),
-        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'NAME': os.getenv('POSTGRES_DB', 'postgres'),
+        'USER': os.getenv('POSTGRES_USERNAME', 'postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        'HOST': os.getenv('POSTGRES_HOST', ''),
+        'PORT': os.getenv('POSTGRES_PORT', ''),
     }
 }
 
-
 # Custom User Model
 AUTH_USER_MODEL = 'users.User'
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
