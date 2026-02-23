@@ -27,10 +27,13 @@ from drf_yasg import openapi
         )
     },
 )
-@api_view(['GET'])
+@api_view(['GET', 'HEAD'])
 @permission_classes([AllowAny])
 def home_view(request):
     """Return API service metadata."""
+    if request.method == 'HEAD':
+        from rest_framework.response import Response as R
+        return R(status=200)
     return Response({
         'status': 'ok',
         'service': 'SyncFloww API',

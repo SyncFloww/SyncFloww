@@ -1,8 +1,3 @@
-"""
-Django settings for SyncFloww — single authoritative settings file.
-Used by both the local dev server and the cPanel production WSGI entry point.
-"""
-
 from pathlib import Path
 from datetime import timedelta
 import os
@@ -18,10 +13,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-sy%n^^-0sy0ra*(eorh3-!i09*9itvxd)8#qlua^rg_xb+rovh')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv(
-    'ALLOWED_HOSTS',
-    'localhost,127.0.0.1,api.syncflow.com,api.syncfloww.com,syncfloww.com,www.syncfloww.com'
-).split(',')
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'api.syncflow.com',
+    'api.syncfloww.com',
+    'syncfloww.com',
+    'www.syncfloww.com',
+]
 
 # ─── Applications ─────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
@@ -159,21 +158,24 @@ SIMPLE_JWT = {
 }
 
 # ─── CORS ─────────────────────────────────────────────────────────────────────
-CORS_ALLOWED_ORIGINS = os.getenv(
-    'CORS_ALLOWED_ORIGINS',
-    ','.join([
-        'http://localhost:5173',
-        'http://localhost:3000',
-        'http://localhost:8080',
-        'https://syncfloww.com',
-        'http://syncfloww.com',
-        'https://www.syncfloww.com',
-        'https://api.syncfloww.com',
-        'https://api.syncflow.com',
-        'https://preview--syncfloww001.lovable.app',
-        'https://lovable.dev',
-    ])
-).split(',')
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:8080',
+    'https://syncfloww.com',
+    'http://syncfloww.com',
+    'https://www.syncfloww.com',
+    'https://api.syncfloww.com',
+    'https://api.syncflow.com',
+    'https://preview--syncfloww001.lovable.app',
+    'https://lovable.dev',
+]
+
+# Wildcard match for all Lovable preview URLs (preview--<hash>.lovable.app)
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r'^https://[a-zA-Z0-9-]+\.lovable\.app$',
+    r'^https://[a-zA-Z0-9-]+\.lovable\.dev$',
+]
 
 CORS_ALLOW_CREDENTIALS = True
 

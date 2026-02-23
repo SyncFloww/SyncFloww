@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
+from Syncfloww.views import health_check
 
 from .views import (
     RegisterView,
@@ -25,6 +26,7 @@ urlpatterns = [
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('auth/me/', CurrentUserView.as_view(), name='current_user'),
     path('auth/password-reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('auth/health/', health_check, name='auth_health'),  # liveness probe
     
     # Social authentication endpoints
     path('auth/google/', GoogleOAuthView.as_view(), name='google_oauth'),
