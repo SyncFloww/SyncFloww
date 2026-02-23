@@ -15,3 +15,4 @@ psycopg2-binary
 gunicorn
 python-dotenv
 drf-yasg
+whitenoise
